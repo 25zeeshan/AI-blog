@@ -4,7 +4,12 @@ import { AppLayout } from '../components/AppLayout';
 
 const Topup = () => {
   return (
-    <div>Topup</div>
+    <div>
+      <h1>Topup</h1>
+      
+
+
+    </div>
   )
 }
 
