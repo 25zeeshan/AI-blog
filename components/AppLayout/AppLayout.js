@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 
-export const AppLayout = ({ children }) => {
+export const AppLayout = ({ children, availableTokens, posts, postId }) => {
   const { user } = useUser();
 
   return (
@@ -36,14 +36,21 @@ export const AppLayout = ({ children }) => {
           </Link>
         </div>
 
-        <Link href="/topup" className="flex items-center justify-center">
+        <Link href="/topup" className="flex items-center justify-center pb-2 mb-2 border-b-2 border-b-gray-400/50">
           <Image src={"/token.png"} alt="token" width={50} height={50} />
           <div>
-            0 tokens available
+            {availableTokens} tokens available
           </div>
         </Link>
 
-        <div className="flex-1 overflow-auto">list of posts</div>
+        <div className="flex-1 overflow-auto">{
+            posts.map((post, index) => {
+              return (
+                <Link key={post._id} href={`/post/${post._id}`} 
+                className={`block text-ellipsis overflow-hidden whitespace-nowrap my-1 p-2 cursor-pointer transition-colors ${postId === post._id? "bg-gray-600 border border-white" : ""} duration-500 hover:bg-gray-600 rounded-md`}>{post.topic}</Link>
+              )
+            })
+        }</div>
 
         <div className="flex gap-2 border-t-2 border-t-gray-400/50 pt-3">
           {user && (
