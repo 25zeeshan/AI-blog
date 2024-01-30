@@ -25,6 +25,11 @@ const New = () => {
 
     const data = await response.json();
 
+    if(data.err){
+      window.alert(data.err);
+      router.push('/topup');
+    }
+
     if (data?.postId) {
       router.push(`/post/${data.postId}`);
     }

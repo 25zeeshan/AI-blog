@@ -4,16 +4,23 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 's.gravatar.com',
-        port: '',
-      },{
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-        port: '',
-      }
+        protocol: "https",
+        hostname: "s.gravatar.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
+        port: "",
+        pathname: '/**'
+      },
     ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

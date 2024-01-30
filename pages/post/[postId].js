@@ -5,6 +5,7 @@ import clientPromise from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import Markdown from "react-markdown";
 import { getAppProps } from "../../utils/getAppProps";
+import Image from "next/image";
 
 const Post = (props) => {
   return (
@@ -29,10 +30,23 @@ const Post = (props) => {
           )
         })}
       </div>
+      {
+        props.image_url && 
+        <img
+          src={props.image_url}
+          alt="Your Image Alt Text"
+          className="w-full aspect-[4/2] object-none"
+        />
+
+      }
 
       <div className="text-md text-slate-900 font-bold mt-6 p-2 bg-slate-600 rounded-sm">
         Blog Post
       </div>
+
+      
+
+      
 
       <Markdown>{props.postContent || ""}</Markdown>
     </div>
@@ -77,6 +91,7 @@ export const getServerSideProps = withPageAuthRequired({
         description: postData.description,
         keywords: postData.keywords,
         topic: postData.topic,
+        image_url: postData.image_url || null,
         ...props
       },
     };

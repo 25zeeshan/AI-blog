@@ -12,7 +12,8 @@ export default withApiAuthRequired(async function generatePost(req, res) {
 
   const dbUser = await db.collection("users").findOne({ auth0Id: user.sub });
   if (!dbUser?.availableTokens) {
-    res.status(403);
+    console.log("0 tokens available");
+    res.status(403).json({ err: "Buy tokens before generate" });
     return;
   }
 
@@ -83,6 +84,15 @@ export default withApiAuthRequired(async function generatePost(req, res) {
 
   const { title, description } = JSON.parse(content) || {};
 
+  const imageRespose = await openai.createImage({
+    model: "dall-e-3",
+    prompt: `generate a heading image for a blog post with the tile : ${title} 
+              and description : ${description}`,
+    n: 1,
+    size: "1792x1024",
+  });
+  const image_url = imageRespose.data?.data[0]?.url;
+
   await db
     .collection("users")
     .updateOne({ auth0Id: user.sub }, { $inc: { availableTokens: -1 } });
@@ -93,6 +103,7 @@ export default withApiAuthRequired(async function generatePost(req, res) {
     description,
     topic,
     keywords,
+    image_url,
     userId: dbUser._id,
     createdDate: new Date(),
   });
