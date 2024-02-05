@@ -7,9 +7,12 @@ const Topup = () => {
 
 
   const handleAddToken = async () => {
-    await fetch('/api/addTokens', {
+    const result = await fetch('/api/addTokens', {
       method: 'POST'
     });
+
+    const json = await result.json();
+    window.location.href = json.session.url;
   }
 
   return (
