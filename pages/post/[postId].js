@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { AppLayout } from "../../components/AppLayout";
@@ -33,9 +34,11 @@ const Post = (props) => {
       {
         props.image_url && 
         <img
-          src={props.image_url}
+          src= {`${props.image_url}`}
           alt="Your Image Alt Text"
-          className="w-full aspect-[4/2] object-none"
+          className="w-full aspect-[4/2] object-contain mt-5"
+          width={100}
+          height={100}
         />
 
       }

@@ -15,7 +15,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "oaidalleapiprodscus.blob.core.windows.net",
+        hostname: "aiblog.s3.ap-south-1.amazonaws.com",
         port: "",
         pathname: '/**'
       },

@@ -3,6 +3,28 @@
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { OpenAIApi, Configuration } from "openai";
 import clientPromise from "../../lib/mongodb";
+import { uploadBase64ImageToS3 } from "../../lib/aws";
+const axios = require('axios');
+
+async function getImageAsBase64(url) {
+  const response = await axios.get(url, { responseType: 'arraybuffer' });
+  const buffer = Buffer.from(response.data, 'binary').toString('base64');
+  return buffer;
+}
+
+function generateFileName(title) {
+  const formattedTitle = title.substring(0,16).toLowerCase().replace(/\s+/g, '_');
+
+  const currentDate = new Date().toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit'
+  }).replace(/\//g, '');
+
+  const fileName = `${formattedTitle}_${currentDate}`;
+
+  return fileName;
+}
 
 export default withApiAuthRequired(async function generatePost(req, res) {
   const { user } = await getSession(req, res);
@@ -93,6 +115,14 @@ export default withApiAuthRequired(async function generatePost(req, res) {
   });
   const image_url = imageRespose.data?.data[0]?.url;
 
+
+  const base64String = await getImageAsBase64(image_url);
+
+  const image_filename = generateFileName(title)
+  const s3uploadData = await uploadBase64ImageToS3(base64String, image_filename)
+
+  console.log(s3uploadData)
+
   await db
     .collection("users")
     .updateOne({ auth0Id: user.sub }, { $inc: { availableTokens: -1 } });
@@ -103,7 +133,7 @@ export default withApiAuthRequired(async function generatePost(req, res) {
     description,
     topic,
     keywords,
-    image_url,
+    image_url : `https://${process.env.AWS_BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${process.env.AWS_FOLDER_NAME}/${image_filename}`,
     userId: dbUser._id,
     createdDate: new Date(),
   });

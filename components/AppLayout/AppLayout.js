@@ -78,7 +78,7 @@ export const AppLayout = ({ children, availableTokens, posts, postId }) => {
         </div>
       </div>
       <div className="bg-gray-700 text-white p-2 h-screen max-h-screen overflow-y-scroll">
-        <div className="text-2xl font-bold">IntelliBlog 1.0</div>
+        <div className="text-2xl font-bold">IntelliBlog 1.0 <span className="float-right">X</span></div>
         {children}
       </div>
     </div>

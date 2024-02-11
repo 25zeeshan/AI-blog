@@ -64,7 +64,7 @@ const New = () => {
       )}
       {!loading && (
         <form
-          className="border border-solid flex flex-col p-5 w-1/2"
+          className="border border-solid flex flex-col mx-5 p-5 w-full lg:w-1/2"
           onSubmit={handleSubmit}
         >
           <label
