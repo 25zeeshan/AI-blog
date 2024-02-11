@@ -7,6 +7,7 @@ import { uploadBase64ImageToS3 } from "../../lib/aws";
 const axios = require('axios');
 
 export const runtime = 'edge';
+export const dynamic = 'force-dynamic'; 
 
 async function getImageAsBase64(url) {
   const response = await axios.get(url, { responseType: 'arraybuffer' });
