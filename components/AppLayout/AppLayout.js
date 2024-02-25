@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 
 import Image from "next/image";
+import ToggleButton from "./ToggleButton";
 
 export const AppLayout = ({ children, availableTokens, posts, postId }) => {
   const { user } = useUser();
 
+  const [sidebarOpen, setSideBarOpen] = useState(false)
+
+  const toggleSidebar = () => {
+    setSideBarOpen(!sidebarOpen)
+  }
+
   return (
-    <div className="grid grid-cols-[300px_1fr] h-screen max-h-screen">
-      <div className="flex flex-col text-white bg-black p-2 overflow-hidden">
+    <div className={`h-screen flex relative`}>
+      <div className={`flex flex-col h-full bg-black text-white absolute top-0 left-0 md:relative ${sidebarOpen ? 'w-80' : 'w-0 p-0 md:w-80 md:p-2'} overflow-hidden z-10 transition-width duration-300 ease-in-out`}>
 
         <div>
           <Link href="/post/new" className="flex justify-between items-center transition-colors duration-500 hover:bg-gray-600 p-2 rounded-md">
@@ -77,8 +84,12 @@ export const AppLayout = ({ children, availableTokens, posts, postId }) => {
           )}
         </div>
       </div>
-      <div className="bg-gray-700 text-white p-2 h-screen max-h-screen overflow-y-scroll">
-        <div className="text-2xl font-bold">IntelliBlog 1.0 <span className="float-right">X</span></div>
+      <div className={`bg-gray-700 text-white p-2 h-screen max-h-screen overflow-y-scroll w-full`}>
+        <div className="text-2xl font-bold flex justify-between">
+          <div>IntelliBlog 1.0</div>
+          <button className="text-white md:hidden" onClick={toggleSidebar}><ToggleButton isSidebarOpen={sidebarOpen} /></button>
+        </div>
+        
         {children}
       </div>
     </div>
